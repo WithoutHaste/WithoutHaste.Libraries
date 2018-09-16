@@ -1,0 +1,6 @@
+Libraries/.vs/*
+Libraries/bin/Debug/*
+Libraries/obj/*
+LibrariesTest/.vs/*
+LibrariesTest/bin/*
+LibrariesTest/obj/*
