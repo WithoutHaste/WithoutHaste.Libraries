@@ -10,22 +10,44 @@ namespace WithoutHaste.Libraries
 {
     public static class AssemblyInfo
     {
+		/// <summary>
+		/// Returns the version of this library.
+		/// </summary>
 		public static Version GetVersion()
 		{
 			return Assembly.GetExecutingAssembly().GetName().Version;
 		}
 
-		public static Dictionary<string, Version> GetAssemblyVersions(string[] dllNames)
+		/// <summary>
+		/// Returns the version of the specified assembly.
+		/// </summary>
+		public static Version GetVersion(Assembly assembly)
 		{
-			return dllNames.ToDictionary(dll => Path.GetFileNameWithoutExtension(dll), dll => GetAssemblyVersion(dll));
+			return assembly.GetName().Version;
 		}
 
-		private static Version GetAssemblyVersion(string dllName)
+		private static Version GetDllVersion(string dllName)
 		{
 			if(!dllName.EndsWith(".dll"))
 				dllName += ".dll";
 			Assembly assembly = Assembly.LoadFrom(dllName);
-			return assembly.GetName().Version;
+			return GetVersion(assembly);
+		}
+
+		public static string GetSemanticVersion(Assembly assembly)
+		{
+			Version version = GetVersion(assembly);
+			return GetSemanticVersion(version);
+		}
+
+		public static string GetSemanticVersion(Version version)
+		{
+			return String.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Build);
+		}
+
+		public static Dictionary<string, Version> GetDllVersions(string[] dllNames)
+		{
+			return dllNames.ToDictionary(dll => Path.GetFileNameWithoutExtension(dll), dll => GetDllVersion(dll));
 		}
 	}
 }
